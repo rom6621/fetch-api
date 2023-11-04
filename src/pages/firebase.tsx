@@ -14,8 +14,8 @@ import { useApi } from "@/hooks/useApi";
 import { GetStaticProps, NextPage } from "next";
 
 interface Props {
-  firebaseApiKey: string;
-  firebaseAuthDomain: string;
+  firebaseApiKey?: string;
+  firebaseAuthDomain?: string;
 }
 
 export const getStaticProps: GetStaticProps<Props> = () => {
