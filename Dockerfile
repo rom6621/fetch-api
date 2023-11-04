@@ -9,11 +9,12 @@ COPY package-lock.json ./
 RUN npm ci
 
 FROM base AS builder
+ARG fetch_host
+ENV NEXT_PUBLIC_FETCH_HOST ${fetch_host}
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ENV NEXT_PUBLIC_FETCH_HOST=$fetch_host
 RUN npm run build
 
 FROM base AS runner
