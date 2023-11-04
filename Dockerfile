@@ -13,13 +13,13 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ENV NEXT_PUBLIC_FETCH_HOST=$fetch_host
 RUN npm run build
 
 FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-ENV NEXT_PUBLIC_FETCH_HOST $fetch_host
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
