@@ -52,8 +52,8 @@ export const TestForm = ({
   const [fetchOrigin, setFetchOrigin] = useState<string>(
     process.env.NEXT_PUBLIC_FETCH_HOST
   );
-  const [fetchResource, setFetchResource] = useState<string>("");
-  const [isAuth, setAuth] = useState(isSignIn);
+  const [fetchResource, setFetchResource] = useState<string>("users/me");
+  const [isAuth, setAuth] = useState(true);
 
   const {
     onCopy: copyAccessToken,
