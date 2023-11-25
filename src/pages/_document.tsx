@@ -4,7 +4,7 @@ const Document = () => {
   return (
     <Html lang="ja">
       <Head>
-        <title>Fetch API Sample</title>
+        <title>Fetch API</title>
       </Head>
       <body>
         <Main />
