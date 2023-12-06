@@ -56,8 +56,8 @@ env:
   PROJECT_ID: datti-poc # TODO: update Google Cloud project id
   GAR_LOCATION: asia-northeast1 # TODO: update Artifact Registry location
   REPOSITORY: fetch-api # TODO: update Artifact Registry repository name
-  SERVICE: asia-northeast1 # TODO: update Cloud Run service name
-  REGION: web-dev # TODO: update Cloud Run service region
+  SERVICE: web-dev # TODO: update Cloud Run service name
+  REGION: asia-northeast1 # TODO: update Cloud Run service region
 
 jobs:
   deploy:
