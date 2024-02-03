@@ -15,7 +15,6 @@ const App = ({
   return (
     <SessionProvider session={session}>
       <ChakraProvider theme={customTheme}>
-        <Box h="80px" bg="white"></Box>
         <Container maxW="container.lg" minH="calc(100vh - 80px)" as="main">
           <Component {...pageProps} />
         </Container>

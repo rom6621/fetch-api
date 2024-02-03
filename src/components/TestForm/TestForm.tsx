@@ -19,8 +19,9 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 interface Props {
   isLoading: boolean;
   isSignIn: boolean;
-  idToken?: string | null;
-  accessToken?: string | null;
+  firebaseIdToken?: string;
+  googleIdToken?: string | null;
+  googleAccessToken?: string | null;
   error?: string;
   result?: string;
   signIn: () => Promise<void>;
@@ -35,8 +36,9 @@ interface Props {
 export const TestForm = ({
   isLoading,
   isSignIn,
-  idToken,
-  accessToken,
+  firebaseIdToken,
+  googleIdToken,
+  googleAccessToken,
   result,
   error,
   signIn,
@@ -44,22 +46,28 @@ export const TestForm = ({
   fetchApi,
 }: Props) => {
   const {
-    onCopy: copyIdToken,
-    value: idTokenValue,
-    hasCopied: isCopyIdToken,
-  } = useClipboard(idToken ?? "未設定");
+    onCopy: copyFirebaseIdToken,
+    value: firebaseIdTokenValue,
+    hasCopied: isCopyFirebaseIdToken,
+  } = useClipboard(firebaseIdToken ?? "未設定");
 
   const [fetchOrigin, setFetchOrigin] = useState<string>(
-    process.env.NEXT_PUBLIC_FETCH_HOST
+    "https://datti-api-dev.fly.dev"
   );
-  const [fetchResource, setFetchResource] = useState<string>("users/me");
+  const [fetchResource, setFetchResource] = useState<string>("me");
   const [isAuth, setAuth] = useState(true);
 
   const {
-    onCopy: copyAccessToken,
-    value: accessTokenValue,
-    hasCopied: isCopyAccessToken,
-  } = useClipboard(accessToken ?? "未設定");
+    onCopy: copyGoogleAccessToken,
+    value: googleAccessTokenValue,
+    hasCopied: isCopyGoogleAccessToken,
+  } = useClipboard(googleAccessToken ?? "未設定");
+
+  const {
+    onCopy: copyGoogleIdToken,
+    value: googleIdTokenValue,
+    hasCopied: isCopyGoogleIdToken,
+  } = useClipboard(googleIdToken ?? "未設定");
 
   const fetchUrl = `${fetchOrigin}/${fetchResource}`;
 
@@ -79,10 +87,10 @@ export const TestForm = ({
           )}
         </HStack>
 
-        <Heading size="md">IDトークン</Heading>
+        <Heading size="md">Firebase ID Token</Heading>
         <InputGroup size="md">
           <Input
-            value={idTokenValue}
+            value={firebaseIdTokenValue}
             isDisabled={!isSignIn}
             bg="white"
             pr="4.5rem"
@@ -94,17 +102,17 @@ export const TestForm = ({
               size="sm"
               colorScheme="facebook"
               isDisabled={!isSignIn}
-              onClick={copyIdToken}
+              onClick={copyFirebaseIdToken}
             >
-              {isCopyIdToken ? "Copied!" : "Copy"}
+              {isCopyFirebaseIdToken ? "Copied!" : "Copy"}
             </Button>
           </InputRightElement>
         </InputGroup>
 
-        <Heading size="md">アクセストークン</Heading>
+        <Heading size="md">Google Access Token</Heading>
         <InputGroup size="md">
           <Input
-            value={accessTokenValue}
+            value={googleAccessTokenValue}
             isDisabled={!isSignIn}
             bg="white"
             pr="4.5rem"
@@ -116,9 +124,31 @@ export const TestForm = ({
               size="sm"
               colorScheme="facebook"
               isDisabled={!isSignIn}
-              onClick={copyAccessToken}
+              onClick={copyGoogleAccessToken}
             >
-              {isCopyAccessToken ? "Copied!" : "Copy"}
+              {isCopyGoogleAccessToken ? "Copied!" : "Copy"}
+            </Button>
+          </InputRightElement>
+        </InputGroup>
+
+        <Heading size="md">Google ID Token</Heading>
+        <InputGroup size="md">
+          <Input
+            value={googleIdTokenValue}
+            isDisabled={!isSignIn}
+            bg="white"
+            pr="4.5rem"
+            readOnly
+          />
+          <InputRightElement width="4.5rem" mr="0.5rem">
+            <Button
+              h="1.75rem"
+              size="sm"
+              colorScheme="facebook"
+              isDisabled={!isSignIn}
+              onClick={copyGoogleIdToken}
+            >
+              {isCopyGoogleIdToken ? "Copied!" : "Copy"}
             </Button>
           </InputRightElement>
         </InputGroup>
@@ -161,8 +191,8 @@ export const TestForm = ({
             onClick={() =>
               fetchApi(
                 fetchUrl,
-                isAuth ? idToken ?? undefined : undefined,
-                accessToken ?? undefined
+                isAuth ? firebaseIdToken ?? undefined : undefined,
+                firebaseIdToken ?? undefined
               )
             }
           >

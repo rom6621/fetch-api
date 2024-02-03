@@ -6,7 +6,7 @@ import GoogleProvider from "next-auth/providers/google";
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  `http://${process.env.NEXTAUTH_URL}/api/auth/callback/google`
+  `${process.env.NEXTAUTH_URL}/api/auth/callback/google`
 );
 
 const refreshoken = async (token: JWT): Promise<JWT> => {
@@ -34,8 +34,8 @@ const refreshoken = async (token: JWT): Promise<JWT> => {
 export default NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       authorization: {
         params: {
           scope: "openid email profile",
@@ -49,7 +49,7 @@ export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     jwt: async ({ token, user, account }) => {
-      if (account && user) {
+      if (account?.access_token) {
         return {
           credential: {
             idToken: account.id_token,
@@ -61,20 +61,16 @@ export default NextAuth({
           user,
         };
       }
-
       if (!token.credential.expiryAt) {
         throw new Error("トークンの有効期限が取得できませんでした");
       }
-
-      if (new Date() > new Date(token.credential.expiryAt)) {
+      if (new Date() > new Date(token.credential.expiryAt + 100)) {
         return refreshoken(token);
       }
-
       return token;
     },
-    session: async ({ session, token, user }) => {
+    session: async ({ session, token }) => {
       session.credential = token.credential;
-
       return session;
     },
   },
