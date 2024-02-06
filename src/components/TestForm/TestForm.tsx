@@ -26,11 +26,7 @@ interface Props {
   result?: string;
   signIn: () => Promise<void>;
   signOut: () => Promise<void>;
-  fetchApi: (
-    url: string,
-    idToken?: string,
-    accessToken?: string
-  ) => Promise<void>;
+  fetchApi: (url: string, idToken?: string) => Promise<void>;
 }
 
 export const TestForm = ({
@@ -191,8 +187,7 @@ export const TestForm = ({
             onClick={() =>
               fetchApi(
                 fetchUrl,
-                isAuth ? firebaseIdToken ?? undefined : undefined,
-                firebaseIdToken ?? undefined
+                isAuth ? firebaseIdToken ?? undefined : undefined
               )
             }
           >

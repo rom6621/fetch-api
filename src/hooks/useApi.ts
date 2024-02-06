@@ -4,20 +4,13 @@ export const useApi = () => {
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
 
-  const fetchApi = async (
-    url: string,
-    idToken?: string,
-    accessToken?: string
-  ) => {
+  const fetchApi = async (url: string, idToken?: string) => {
     setResult("");
     setError("");
     try {
       const headers: HeadersInit = {};
       if (idToken !== undefined) {
-        headers["Authorization"] = `Bearer ${idToken}`;
-      }
-      if (accessToken !== undefined) {
-        headers["Access-Token"] = accessToken;
+        headers.Authorization = `Bearer ${idToken}`;
       }
       const response = await fetch(url, {
         method: "GET",
